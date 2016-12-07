@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
-from PyQt4.QtGui import QAction, QIcon
+from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, QFileInfo
+from PyQt4.QtGui import QAction, QIcon, QFileDialog
 from qgis.analysis import QgsRasterCalculator, QgsRasterCalculatorEntry
 from qgis.core import *
 from PyQt4.QtGui import QMessageBox
@@ -70,6 +70,9 @@ class CERA:
         # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = self.iface.addToolBar(u'CERA')
         self.toolbar.setObjectName(u'CERA')
+
+        self.dlg.path.clear()
+        self.dlg.browse.clicked.connect(self.select_output_file)
 
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
@@ -237,7 +240,15 @@ class CERA:
                 self.dlg.ecology.addItem(layer.name(), layer)
                 self.dlg.heritage.addItem(layer.name(), layer)
 
+    def select_output_file(self):
+        filename = QFileDialog.getSaveFileName(self.dlg, "Select output file ","", '*.tif')
+        self.dlg.path.setText(filename)
+
     def executecc2005(self):
+
+        filename = self.dlg.path.text()
+        print filename
+
         [total100, rates100] = self.checkrates100() # load selected rates at 100 meters
         [total5000, rates5000] = self.checkrates5000() # load selected rates at 5000 meters
         if rates100 is None: # error if the sum is not equal to 1
@@ -277,7 +288,8 @@ class CERA:
             QMessageBox.warning(None, 'Done', 'Coastal Risk Assessment Complete!')
 
     def computeconsequences(self, consequencelayers, consequenceentries):
-        path = str(os.path.expanduser("~")) + '\Consequences.tif'
+        filename = self.dlg.path.text()
+        path = filename.replace(".tif","_consequence.tif")
         formula = '(((('+ consequenceentries[1].ref +' + '+ consequenceentries[0].ref +' + '+ consequenceentries[2].ref +' + '+ consequenceentries[3].ref +') / 4) >= '+ consequenceentries[0].ref +' AND (('+ consequenceentries[1].ref +' + '+ consequenceentries[0].ref +' + '+ consequenceentries[2].ref +' + '+ consequenceentries[3].ref +') / 4) >= 1) * (('+ consequenceentries[1].ref +' + '+ consequenceentries[0].ref +' + '+ consequenceentries[2].ref +' + '+ consequenceentries[3].ref +') / 4) + ((('+ consequenceentries[1].ref +' + '+ consequenceentries[0].ref +' + '+ consequenceentries[2].ref +' + '+ consequenceentries[3].ref +') / 4) < '+ consequenceentries[0].ref +' AND '+ consequenceentries[0].ref +' >= 1) * '+ consequenceentries[0].ref +')'
         print formula #try formula
         [extent, width, height] = self.resultextent(consequencelayers)
@@ -314,7 +326,8 @@ class CERA:
             QMessageBox.warning(None, 'Coastal Risk Assessment', 'The output layer is not valid!')
 
     def computerisk(self, risklayers, riskentries):
-        path = str(os.path.expanduser("~")) + '\Risk.tif'
+        filename = self.dlg.path.text()
+        path = filename.replace(".tif","_pre_result.tif")
         formula = '((( '+ riskentries[0].ref +' + '+ riskentries[1].ref +' )  < 4 AND  ( '+ riskentries[0].ref +' + '+ riskentries[1].ref +' )   >=  2 )  OR   (( '+ riskentries[0].ref +' + '+ riskentries[1].ref +' )  = 4 AND  ( '+ riskentries[0].ref +' = 3 OR '+ riskentries[1].ref +' = 3 ))) * 1 + (( '+ riskentries[0].ref +' = 2 AND '+ riskentries[1].ref +' = 2 ) OR ('+ riskentries[0].ref +' + '+ riskentries[1].ref +')  = 5) * 2 + (('+ riskentries[0].ref +' + '+ riskentries[1].ref +')  = 6) * 3 + (( '+ riskentries[0].ref +' = 4 AND '+ riskentries[1].ref +' = 4 ) OR ('+ riskentries[0].ref +' + '+ riskentries[1].ref +')  = 7) * 4 + ((( '+ riskentries[0].ref +' + '+ riskentries[1].ref +' )  > 8 AND  ( '+ riskentries[0].ref +' + '+ riskentries[1].ref +' )   <=  10 )  OR   (( '+ riskentries[0].ref +' + '+ riskentries[1].ref +' )  = 8 AND  ( '+ riskentries[0].ref +' = 5 OR '+ riskentries[1].ref +' = 5 ))) * 5'
 
 
@@ -339,7 +352,8 @@ class CERA:
 
 
     def roundresult(self, result):
-        path = str(os.path.expanduser("~")) + '\Rounded_Vulnerability.tif'
+        filename = self.dlg.path.text()
+        path = filename.replace(".tif","_risk.tif")
         entries = []
         entry = self.defineentry(result)
         entries.append(entry)
@@ -397,7 +411,8 @@ class CERA:
         return extent, width, height
 
     def calculator(self, layers, rates100, rates5000, entries):
-        path = str(os.path.expanduser("~")) + '\Vulnerability.tif'
+        filename = self.dlg.path.text()
+        path = filename.replace(".tif","_vulnerability.tif")
         formula = self.designformula(rates100, rates5000, entries)
 
         [extent, width, height] = self.resultextent(layers)
@@ -531,7 +546,8 @@ class CERA:
                     return None
 
     def createdistancemap(self, layers, entries):
-        path = str(os.path.expanduser("~")) + '\DistancetoShoreline.tif'
+        filename = self.dlg.path.text()
+        path = filename.replace(".tif","_distance_to_shoreline.tif")
         formula = '(' + entries[0].ref + ' > 1000) * 1 + (' + entries[0].ref + ' > 500 AND ' + entries[0].ref + ' <= 1000) * 2 + (' + entries[0].ref + ' > 300 AND ' + entries[0].ref + ' <= 500) * 3 +  (' + entries[0].ref + ' > 150 AND ' + entries[0].ref + ' <= 300) * 4 + (' + entries[0].ref + ' <= 150) * 5'
         calc = QgsRasterCalculator(formula,
                                    path,
