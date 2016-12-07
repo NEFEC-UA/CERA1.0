@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/Cera" >
+    <qresource prefix="/plugins/CERA" >
         <file>icon.png</file>
     </qresource>
 </RCC>

@@ -1,23 +1,23 @@
-# This file contains metadata for your plugin. Since
-# version 2.0 of QGIS this is the proper way to supply
-# information about a plugin. The old method of
-# embedding metadata in __init__.py will
+# This file contains metadata for your plugin. Since 
+# version 2.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py will 
 # is no longer supported since version 2.0.
 
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=CERA
+name=Coastal Assessment
 qgisMinimumVersion=2.0
 description=Coastal Erosion Risk Assessment
-version=1.0
-author=Pedro Narra
+version=0.9
+author=NEFEC
 email=pedronarra@ua.pt
 
-about=Description
+about=Coastal Erosion Risk Assessment
 
-tracker=https://github.com/NEFEC-UA/CERA/issues
-repository=https://github.com/NEFEC-UA/CERA
+tracker=bugtracker.github.com
+repository=repository.github.com
 # End of mandatory metadata
 
 # Recommended items:
@@ -26,9 +26,9 @@ repository=https://github.com/NEFEC-UA/CERA
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags= qgis, python, qt
+tags=tags
 
-homepage=https://github.com/NEFEC-UA/CERA
+homepage=homepage.github.com
 category=Plugins
 icon=icon.png
 # experimental flag
@@ -36,3 +36,4 @@ experimental=True
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
+

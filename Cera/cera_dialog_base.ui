@@ -724,6 +724,41 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>shoreline</tabstop>
+  <tabstop>topography</tabstop>
+  <tabstop>geology</tabstop>
+  <tabstop>geomorphology</tabstop>
+  <tabstop>ground</tabstop>
+  <tabstop>anthropogenic</tabstop>
+  <tabstop>wave</tabstop>
+  <tabstop>tide</tabstop>
+  <tabstop>rates</tabstop>
+  <tabstop>population</tabstop>
+  <tabstop>economy</tabstop>
+  <tabstop>ecology</tabstop>
+  <tabstop>heritage</tabstop>
+  <tabstop>shoreline100</tabstop>
+  <tabstop>topography100</tabstop>
+  <tabstop>geology100</tabstop>
+  <tabstop>geomorphology100</tabstop>
+  <tabstop>ground100</tabstop>
+  <tabstop>anthropogenic100</tabstop>
+  <tabstop>wave100</tabstop>
+  <tabstop>tide100</tabstop>
+  <tabstop>rates100</tabstop>
+  <tabstop>shoreline5000</tabstop>
+  <tabstop>topography5000</tabstop>
+  <tabstop>geology5000</tabstop>
+  <tabstop>geomorphology5000</tabstop>
+  <tabstop>ground5000</tabstop>
+  <tabstop>anthropogenic5000</tabstop>
+  <tabstop>wave5000</tabstop>
+  <tabstop>tide5000</tabstop>
+  <tabstop>rates5000</tabstop>
+  <tabstop>execute</tabstop>
+  <tabstop>close</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

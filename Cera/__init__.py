@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- Cera
+ CERA
                                  A QGIS plugin
  Coastal Erosion Risk Assessment
                              -------------------
-        begin                : 2016-06-21
-        copyright            : (C) 2016 by Pedro Narra
+        begin                : 2016-11-17
+        copyright            : (C) 2016 by NEFEC
         email                : pedronarra@ua.pt
         git sha              : $Format:%H$
  ***************************************************************************/
@@ -25,11 +25,11 @@
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name
-    """Load Cera class from file Cera.
+    """Load CERA class from file CERA.
 
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
     #
-    from .cera import Cera
-    return Cera(iface)
+    from .cera import CERA
+    return CERA(iface)
