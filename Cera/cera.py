@@ -74,6 +74,8 @@ class CERA:
         self.dlg.path.clear()
         self.dlg.browse.clicked.connect(self.select_output_file)
 
+        self.dlg.execute.clicked.connect(self.executecc2005)
+
     # noinspection PyMethodMayBeStatic
     def tr(self, message):
         """Get the translation for a string using Qt translation API.
@@ -201,7 +203,7 @@ class CERA:
             # substitute with your code.
         #    pass
 
-        self.dlg.execute.clicked.connect(self.executecc2005)
+
 
     def loadlayersbox(self):
         layers = self.iface.legendInterface().layers()
