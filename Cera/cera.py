@@ -292,7 +292,8 @@ class CERA:
     def computeconsequences(self, consequencelayers, consequenceentries):
         filename = self.dlg.path.text()
         path = filename.replace(".tif","_consequence.tif")
-        formula = '(((('+ consequenceentries[1].ref +' + '+ consequenceentries[0].ref +' + '+ consequenceentries[2].ref +' + '+ consequenceentries[3].ref +') / 4) >= '+ consequenceentries[0].ref +' AND (('+ consequenceentries[1].ref +' + '+ consequenceentries[0].ref +' + '+ consequenceentries[2].ref +' + '+ consequenceentries[3].ref +') / 4) >= 1) * (('+ consequenceentries[1].ref +' + '+ consequenceentries[0].ref +' + '+ consequenceentries[2].ref +' + '+ consequenceentries[3].ref +') / 4) + ((('+ consequenceentries[1].ref +' + '+ consequenceentries[0].ref +' + '+ consequenceentries[2].ref +' + '+ consequenceentries[3].ref +') / 4) < '+ consequenceentries[0].ref +' AND '+ consequenceentries[0].ref +' >= 1) * '+ consequenceentries[0].ref +')'
+        print 'O primeiro calculo tem o seguinte path:' + path
+        formula = '(('+ consequenceentries[0].ref +' + '+ consequenceentries[3].ref +' + '+ consequenceentries[1].ref +' + '+ consequenceentries[2].ref +') / 4 >= '+ consequenceentries[0].ref +') * (('+ consequenceentries[0].ref +' + '+ consequenceentries[3].ref +' + '+ consequenceentries[1].ref +' + '+ consequenceentries[2].ref +') / 4) + (('+ consequenceentries[0].ref +' + '+ consequenceentries[3].ref +' + '+ consequenceentries[1].ref +' + '+ consequenceentries[2].ref +') / 4 < '+ consequenceentries[0].ref +') * '+ consequenceentries[0].ref
         print formula #try formula
         [extent, width, height] = self.resultextent(consequencelayers)
 
@@ -309,10 +310,13 @@ class CERA:
         entries = []
         entry = self.defineentry(consequences)
         entries.append(entry)
-        newformula = '(' + entries[0].ref + ' < 1.5 AND ' + entries[0].ref + ' > 0) * 1 + (' + entries[0].ref + '>= 1.5 AND ' + entries[0].ref + ' < 2.5) * 2 + (' + entries[0].ref + ' >=2.5 AND ' + entries[0].ref + ' < 3.5) * 3 + (' + entries[0].ref + ' >=3.5 AND ' + entries[0].ref + ' < 4.5) * 4 + (' + entries[0].ref + ' >=4.5) * 5' # FALTA EDITAR A FORMULA
-
-        newpath = str(os.path.expanduser("~")) + '\Consequences.tif'
-
+        newformula = '('+ entries[0].ref +' >= 0.5 AND '+ entries[0].ref +' < 1.5)*1+('+ entries[0].ref +' >= 1.5 AND '+ entries[0].ref +' < 2.5)*2+('+ entries[0].ref +' >= 2.5 AND '+ entries[0].ref +' < 3.5)*3+('+ entries[0].ref +' >= 3.5 AND '+ entries[0].ref +' < 4.5)*4+('+ entries[0].ref +' >= 4.5 AND '+ entries[0].ref +' < 5.5)*5'
+		#newformula = '(' + entries[0].ref + ' < 1.5 AND ' + entries[0].ref + ' > 0) * 1 + (' + entries[0].ref + '>= 1.5 AND ' + entries[0].ref + ' < 2.5) * 2 + (' + entries[0].ref + ' >=2.5 AND ' + entries[0].ref + ' < 3.5) * 3 + (' + entries[0].ref + ' >=3.5 AND ' + entries[0].ref + ' < 4.5) * 4 + (' + entries[0].ref + ' >=4.5) * 5' # FALTA EDITAR A FORMULA
+        print newformula
+        #newpath = str(os.path.expanduser("~")) + '\Consequences.tif'
+        newpath = filename.replace(".tif","_consequence_rounded.tif")
+        print 'O segundo calculo tem o seguinte path:' + newpath
+        
         newcalc = QgsRasterCalculator(newformula,
                                    newpath,
                                    'GTiff',
@@ -321,7 +325,7 @@ class CERA:
                                    height,
                                    entries)
         newcalc.processCalculation()
-        result = QgsRasterLayer(path,'Consequencias')
+        result = QgsRasterLayer(newpath,'Consequencias')
         if result.isValid():
             return result
         else:
