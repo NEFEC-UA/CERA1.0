@@ -1,7 +1,7 @@
-# CERA
+# CERA1.0
 Hi!
 
-So, CERA is a plugin to QGIS that can assess coastal erosion risk, given that you give the appropriate input.
+So, CERA1.0 is a plugin to QGIS that can assess coastal erosion risk, given that you give the appropriate input.
 
 The plugin is still in development, and will continue to be on development for the future time, so, feedback is welcomed.
 
